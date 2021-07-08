@@ -1,0 +1,109 @@
+---
+title: "Tweet Counts Twitch Demo"
+author: "Christopher Barrie"
+date: "7/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tweet Counts Demo
+
+```{r, message=F}
+library(academictwitteR)
+library(ggplot2)
+library(dplyr)
+library(gganimate)
+library(ggthemes)
+
+```
+
+```{r, echo=F}
+
+tweetcounts <- readRDS("data/clim_emergency.rds")
+
+```
+
+```{r, eval=F}
+
+# main function -----------------------------------------------------------
+
+tweetcounts <- count_all_tweets(
+  query = "(climate emergency)",
+  start_tweets = "2015-01-01T00:00:00Z",
+  end_tweets = "2021-06-25T00:00:00Z",
+  file = "data/clim_emergency.rds",
+  granularity = "day",
+  n = Inf
+)
+
+head(tweetcounts)
+
+```
+
+```{r, echo=F}
+
+knitr::kable(head(tweetcounts))
+
+```
+
+```{r, eval=F}
+
+# comparing counts --------------------------------------------------------
+
+tweetcounts2 <- count_all_tweets(
+  query = "(climate change)",
+  start_tweets = "2015-01-01T00:00:00Z",
+  end_tweets = "2021-06-25T00:00:00Z",
+  file = "data/clim_change.rds",
+  granularity = "day",
+  n = Inf
+)
+
+```
+
+```{r, echo=F}
+
+tweetcounts2 <- readRDS("data/clim_change.rds")
+
+```
+
+```{r}
+
+tweetcountsratio <- tweetcounts %>%
+  select(start, tweet_count) %>%
+  rename(clim_emerg = tweet_count) %>%
+  left_join(tweetcounts2, by = "start") %>%
+  rename(clim_chng = tweet_count) %>%
+  select(-end) %>%
+  mutate(ratio = clim_emerg/clim_chng)
+
+```
+
+```{r}
+
+tweetcountsratio %>%
+  mutate(date = as.Date(start)) %>%
+  ggplot(aes(date, ratio)) +
+  geom_line() +
+  geom_vline(
+    mapping = aes(xintercept = as.Date("2018-08-01")),
+    color = "black",
+    linetype = "dashed"
+  ) +
+  geom_vline(
+    mapping = aes(xintercept = as.Date("2019-03-15")),
+    color = "darkgreen",
+    linetype = "dashed"
+  ) +
+  theme_tufte(base_family = "Helvetica") +
+  labs(x = "Date", y = "ratio climate emergency/climate change") +
+  theme(
+  plot.title = element_text(size = 15),
+  axis.title = element_text(size = 12, face = "bold"),
+  axis.text = element_text(size = 12)
+  )
+
+```
