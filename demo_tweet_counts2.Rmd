@@ -17,6 +17,7 @@ library(ggplot2)
 library(dplyr)
 library(gganimate)
 library(ggthemes)
+library(tidyr)
 
 ```
 
@@ -78,4 +79,22 @@ tcs_all %>%
   theme(legend.position = "bottom", 
         legend.direction = "horizontal")
 
+```
+
+```{r}
+
+## reshape long to wide and plot
+
+tcs_all %>%
+  pivot_wider(names_from = query,
+              values_from = tweet_count) %>%
+  mutate(ratio = `(climate emergency)` / `(climate change)`) %>%
+  ggplot(aes(date, ratio)) +
+  geom_line() +
+  theme_tufte(base_family = "Helvetica") +
+  labs(x = "Date", y = "# ratio climate emergency/climate change") +
+  facet_wrap(~ country, scales = "free") +
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal")
+  
 ```
