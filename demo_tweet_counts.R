@@ -58,6 +58,8 @@ tweetcounts %>%
   geom_line() +
   theme_tufte(base_family = "Helvetica") +
   labs(x = "Date", y = "# climate emergency tweets") +
+  theme(axis.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 12)) +
   geom_vline(
     mapping = aes(xintercept = as.Date("2018-08-01")),
     #first Greta sit-in
@@ -147,7 +149,7 @@ animate(
   # res = 150
 )
 
-anim_save("plot.gif", animation = last_animation())
+# anim_save("plot.gif", animation = last_animation())
 
 
 # comparing counts --------------------------------------------------------
