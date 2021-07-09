@@ -26,8 +26,8 @@ We will be using the following packages:
 library(academictwitteR) #to query the Twitter API
 library(ggplot2) #for plotting
 library(gganimate) #for plot animations
+library(ggthemes) #for plot styling
 library(dplyr) #for data wrangling
-library(ggthemes) #for plot styiling
 library(tidyr) #for data wrangling
 ```
 

@@ -3,11 +3,12 @@
 # AUTHOR: CHRISTOPHER BARRIE                           #
 ########################################################
 
-library(academictwitteR)
-library(ggplot2)
-library(dplyr)
-library(gganimate)
-library(ggthemes)
+library(academictwitteR) #to query the Twitter API
+library(ggplot2) #for plotting
+library(gganimate) #for plot animations
+library(ggthemes) #for plot styling
+library(dplyr) #for data wrangling
+library(tidyr) #for data wrangling
 
 
 # main function -----------------------------------------------------------
@@ -24,6 +25,11 @@ tweetcounts <- count_all_tweets(
 # tweetcounts <- readRDS("data/clim_emergency.rds") #here's one I made earlier
 
 head(tweetcounts)
+
+# test <- tweetcounts %>%
+#   mutate(date = as.Date(start))
+# 
+# head(test$date)
 
 # visualize output --------------------------------------------------------
 
